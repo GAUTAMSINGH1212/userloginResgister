@@ -39,15 +39,12 @@ function UserDashboard() {
         </ul>
       </div>
 
-      {/* Main Content Area */}
       <div className="flex-1 p-6">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-semibold">Welcome, User!</h1>
+
+          <h1 className="text-3xl font-semibold">Welcome,  {userProfile.name}</h1>
           <button className="bg-blue-600 text-white p-2 rounded">Logout</button>
         </div>
-
-        {/* User Profile */}
         <div className="bg-white p-6 rounded-lg w-1/2 shadow-md mb-6 flex items-center">
 <div>
 <img src="https://via.placeholder.com/100" alt="User Avatar" className="rounded-full mr-6" />

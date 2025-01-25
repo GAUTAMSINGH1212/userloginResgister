@@ -10,7 +10,7 @@ const Navbar = () => {
 
 <header class="bg-blue-900 text-white py-4">
     <div class="container mx-auto flex justify-between items-center px-4">
-      <h1 class="text-3xl font-extrabold">ShopEasy</h1>
+      <h1 class="text-3xl font-extrabold">Try One Shop</h1>
       <nav>
         <ul class="flex space-x-6 text-lg">
           <li>
