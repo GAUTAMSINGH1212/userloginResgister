@@ -9,7 +9,7 @@ const JWT_SECRET =
 const register = async (req, res) => {
   const { firstname, email, password } = req.body;
 
-  console.log("req", firstname);
+  console.log("res", res);
 
   // Validate name
   if (!firstname || firstname.trim().length < 3) {
@@ -19,18 +19,15 @@ const register = async (req, res) => {
   }
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
     const createdUser = await User.create({
-      name: firstname.trim(), // Trim leading/trailing whitespace
+      name: firstname.trim(),
       email,
       password: hashedPassword,
     });
@@ -69,7 +66,7 @@ const login = async (req, res) => {
       { id: user._id, email, firstname, lastname },
       JWT_SECRET,
       {
-        expiresIn: "1day",
+        expiresIn: "30day",
       }
     );
 
@@ -89,7 +86,7 @@ const dashboard = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-  const accessToken = req.headers.authorization.split(" ")[1];
+  const accessToken = req.headers && req.headers.authorization ? req.headers.authorization?.split(" ")[1]: '';
 
   console.log('accessToken',req.headers.authorization.split(" ")[1])
 

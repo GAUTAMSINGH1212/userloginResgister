@@ -1,22 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Ensure React Router is installed and set up
+import { Link, Navigate , useNavigate } from "react-router-dom"; // Ensure React Router is installed and set up
 
-import Header from "../components/layout/header";
-import Footer from "../components/layout/footer";
-import { localStorageService } from "../Services/localStorage.service";
+import Header from "../layout/header";
+import Footer from "../layout/footer";
+import { localStorageService } from "../../Services/localStorage.service";
 const Login = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [lastname, setLastname] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Username:", username);
     console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Lastname:", lastname);
+    console.log("Password:", password); 
 
     const payload = {
       email: email,
@@ -45,6 +43,7 @@ const Login = () => {
 
       // Handle success
       console.log("Login successful!");
+      navigate("/dashboard")
     } catch (error) {
       console.error("Error:", error.message);
       setError(error.message);
@@ -59,32 +58,6 @@ const Login = () => {
           <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
             <h2 className="text-2xl font-bold mb-6 text-center">Login Page</h2>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700">
-                  Username:
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="lastname" className="block text-gray-700">
-                  Lastname:
-                </label>
-                <input
-                  type="text"
-                  id="lastname"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-gray-700">
                   Email:
@@ -121,12 +94,13 @@ const Login = () => {
               {error && (
                 <div className="text-red-500 text-center mt-4">{error}</div>
               )}
-              <Link
+             <div className="mt-5"> <Link
                 to="/register"
-                className="w-full bg-blue-500 text-center text-white py-2 mt-4 px-4 rounded-md hover:bg-blue-600"
+                className=""
               >
-                Register
-              </Link>
+                <button className="w-full bg-blue-500 text-center text-white py-2 mt-4 px-4 rounded-md hover:bg-blue-600">Register</button>
+                
+              </Link></div>
             </form>
           </div>
         </div>
