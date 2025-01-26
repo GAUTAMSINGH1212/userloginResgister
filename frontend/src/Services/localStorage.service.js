@@ -18,4 +18,13 @@ const getAccessToken = () => {
   }
 };
 
-export const localStorageService = { storeAccessToken, getAccessToken };
+const clearStorage = () => {
+  try {
+    localStorage.removeItem("access-token");
+    return true;
+  } catch (error) {
+    console.log("error while getting access token", error);
+  }
+};
+
+export const localStorageService = { storeAccessToken, getAccessToken,clearStorage };
