@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import {connectDB} from './database/dbconfg.js'
 import userRoute from './routes/UserRoute.js'
+import productRoute from './routes/ProductRoute.js'
 
 const app = express();
 const port = 8000;
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 
 app.use('/user', userRoute);
+app.use('/product', productRoute);
 
 connectDB()
     .then((res)=> console.log('res',res))
