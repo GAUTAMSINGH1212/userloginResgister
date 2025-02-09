@@ -1,8 +1,41 @@
-import react from "react";
+import react ,{useEffect,useState}from "react";
 
 import Navbar from "../layout/header";
 import Footer from "../layout/footer";
 const Product = () => {
+  const apiUrl = "http://localhost:8000/";
+  
+  const getproduct = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+  
+      const response = await fetch(`${apiUrl}product`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Add the Authorization header
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("Products:", data);
+    } catch (error) {
+      console.error("Error fetching products:", error.message);
+    }
+  };
+  
+  useEffect(() => {
+    getproduct();
+  }, []);
+  
   const products = [
     {
       id: 1,

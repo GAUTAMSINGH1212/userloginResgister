@@ -66,7 +66,7 @@ const login = async (req, res) => {
       { id: user._id, email, firstname, lastname },
       JWT_SECRET,
       {
-        expiresIn: "30day",
+        expiresIn: "1year",
       }
     );
 
@@ -86,26 +86,22 @@ const dashboard = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-  const accessToken = req.headers && req.headers.authorization ? req.headers.authorization?.split(" ")[1]: '';
+  const authHeader = req.headers.authorization;
 
-  console.log('accessToken',req.headers.authorization.split(" ")[1])
-
-  if (!accessToken) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Access token is required" });
   }
 
+  const accessToken = authHeader.split(" ")[1];
+
+  console.log('accessToken:', accessToken); 
+
   try {
-    // Verify the access token
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-
-    // Find the user by ID from the token payload
     const user = await User.findById(decoded.id).select("-password");
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Respond with the user's profile
     res.status(200).json({
       success: true,
       message: "User profile retrieved successfully",
@@ -119,6 +115,7 @@ const userProfile = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 export { dashboard, register, login,userProfile };

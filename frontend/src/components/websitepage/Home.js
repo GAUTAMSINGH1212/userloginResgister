@@ -18,16 +18,33 @@ const Home = () => {
 
   const getUserProfile = async () => {
     const accessToken = localStorageService.getAccessToken();
-    console.log("acces token from forntend", accessToken);
-    const response = await axios.get("http://localhost:8000/user/profile", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Pass token with 'Bearer' format
-      },
-    });
-    console.log("response.data", response.data);
-    setUserProfile(response.data.user);
+  
+    if (!accessToken) {
+      console.error("No access token found. Redirecting to login...");
+      return; // Stop execution if no token
+    }
+  
+    try {
+      const response = await axios.get("http://localhost:8000/user/profile", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Ensure 'Bearer ' is used correctly
+        },
+      });
+  
+      console.log("User profile response:", response.data);
+      setUserProfile(response.data.user);
+    } catch (error) {
+      console.error("Error fetching user profile:", error.response);
+      
+      if (error.response?.status === 401) {
+        alert("Session expired. Please log in again.");
+        // Redirect user to login page (if using React Router)
+        // window.location.href = "/login";
+      }
+    }
   };
+  
   const products = [
     {
       id: 1,
