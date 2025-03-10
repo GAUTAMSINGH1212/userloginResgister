@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const MONGO_URI='mongodb+srv://gautamkhiwadiya:gautam123@myprojectdatabase.scped.mongodb.net/mydatabase'
 const connectDB = async () => {
     try {
         // Correctly use process.env.MONGO_URI
