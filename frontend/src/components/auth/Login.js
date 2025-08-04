@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate , useNavigate } from "react-router-dom"; // Ensure React Router is installed and set up
-
+import { Link, Navigate , useNavigate } from "react-router-dom"; 
 import Header from "../layout/header";
 import Footer from "../layout/footer";
 import { localStorageService } from "../../Services/localStorage.service";
@@ -23,7 +22,6 @@ const Login = () => {
 
     try {
       const response = await fetch("http://localhost:8000/user/login", {
-        // Ensure the URL is correct
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,8 +38,6 @@ const Login = () => {
       localStorageService.storeAccessToken(data.token);
       console.log("Response:", data);
       setError("");
-
-      // Handle success
       console.log("Login successful!");
       navigate("/dashboard")
     } catch (error) {

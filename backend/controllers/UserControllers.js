@@ -49,7 +49,7 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -62,19 +62,24 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user._id, email, firstname, lastname },
-      JWT_SECRET,
-      {
-        expiresIn: "1year",
-      }
-    );
+    // Generate new token
+    const token = jwt.sign({ id: user._id, email }, JWT_SECRET, {
+      expiresIn: "1year",
+    });
 
-    res.status(200).json({ message: "Login successful", token });
+    // Initialize tokens array if not exists and add the new token
+    user.tokens = user.tokens || [];
+    user.tokens.push({ token });
+
+    // Save the token in the database
+    await user.save();
+
+    res.status(200).json({ message: "Login successful", token, allTokens: user.tokens });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 const dashboard = async (req, res) => {
   try {
